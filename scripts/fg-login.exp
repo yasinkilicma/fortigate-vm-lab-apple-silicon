@@ -1,0 +1,41 @@
+#!/usr/bin/env expect
+# Automatischer erster Login an der FortiGate-Konsole inkl. erzwungenem Passwortwechsel.
+# Aufruf:  ./fg-login.exp <neues-passwort> [port]
+#
+# Verbindet sich auf die TCP-Serielle (Standard 127.0.0.1:4555), loggt sich als
+# admin mit leerem Default-Passwort ein und setzt das neue Passwort.
+
+set timeout 30
+set pw   [lindex $argv 0]
+set port [expr {[llength $argv] > 1 ? [lindex $argv 1] : 4555}]
+
+if {$pw eq ""} {
+    puts "Verwendung: ./fg-login.exp <neues-passwort> \[port\]"
+    exit 1
+}
+
+spawn nc 127.0.0.1 $port
+send "\r"
+
+expect {
+    -re "login:"  { send "admin\r"; exp_continue }
+    -re "(P|p)assword:" { send "\r" }
+    timeout { puts "\nTimeout beim Login-Prompt"; exit 1 }
+}
+
+# Erster Login -> erzwungener Passwortwechsel
+expect {
+    -re "(N|n)ew (P|p)assword:"     { send "$pw\r"; exp_continue }
+    -re "(C|c)onfirm (P|p)assword:" { send "$pw\r"; exp_continue }
+    -re "incorrect|denied"          { puts "\nLogin fehlgeschlagen"; exit 1 }
+    -re "# "                        { }
+    timeout                         { puts "\nTimeout nach Passwort"; exit 1 }
+}
+
+# Paging deaktivieren (sonst --More-- bei langen Ausgaben)
+send "config system console\r"; expect "# "
+send "set output standard\r";    expect "# "
+send "end\r";                    expect "# "
+
+puts "\n>>> Login erfolgreich, Paging deaktiviert. Prompt bereit."
+interact
