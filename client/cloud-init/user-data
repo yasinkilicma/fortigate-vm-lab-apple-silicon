@@ -1,0 +1,23 @@
+#cloud-config
+hostname: kali-client
+users:
+  - name: kali
+    plain_text_passwd: "<lab-passwort>"   # nur Lab! kein echtes Passwort committen
+    lock_passwd: false
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: [sudo]
+    shell: /bin/bash
+ssh_pwauth: true
+chpasswd:
+  expire: false
+package_update: true
+packages:
+  - nmap
+  - hping3
+  - curl
+  - tcpdump
+  - net-tools
+  - dnsutils
+runcmd:
+  - [ systemctl, enable, --now, ssh ]
+final_message: "CLOUD_INIT_DONE kali-client ready"

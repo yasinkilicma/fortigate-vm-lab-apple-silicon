@@ -176,12 +176,26 @@ C   192.168.64.0/24 is directly connected, port1
 ├── README.md
 ├── configs/
 │   └── fortigate-baseline.conf     # FortiOS-CLI-Baseline (Interfaces, DHCP, Policy)
+├── client/                         # Client hinter der Firewall (Debian-Cloud + Socket-Net)
+│   ├── cloud-init/{user-data,meta-data}
+│   ├── netplan-99-fgt-lan.yaml     # statische LAN-IP hinter der FortiGate
+│   └── run-client-qemu.sh          # Client-QEMU, socket-connect zur FortiGate
+├── docs/
+│   └── client-vm-socket-link.md    # Client hinter die FortiGate hängen (QEMU socket netdev)
 ├── scripts/
+│   ├── start-lab.sh                # ganzes Lab starten (FortiGate + Client)
 │   ├── fg-serial-console.sh        # mit der seriellen Konsole verbinden (nc)
 │   └── fg-login.exp                # automatischer Login + Passwortwechsel (expect)
 └── utm/
     └── config-snippets.md          # config.plist-Anpassungen & UTM-Notizen
 ```
+
+## Client hinter der Firewall
+
+Ein Linux-Client wird über **QEMU socket-networking** hinter die FortiGate gehängt, sodass sein gesamter
+Verkehr inspiziert wird. Da der Kali-Installer in dieser Umgebung an jeder Ebene scheitert, kommt ein
+direkt bootbares **Debian-ARM64-Cloud-Image** (cloud-init) zum Einsatz — *Kali = Debian + Tools*.
+Vollständige Anleitung: [`docs/client-vm-socket-link.md`](docs/client-vm-socket-link.md).
 
 ---
 
