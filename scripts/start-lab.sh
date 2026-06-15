@@ -12,6 +12,6 @@ nohup ~/kali-lab/run-cloud.sh > ~/kali-lab/qemu-client.log 2>&1 &
 echo "  -> client pid $!"
 echo ""
 echo "ERİŞİM:"
-echo "  FortiGate GUI : https://192.168.64.2  (admin / <admin-passwort>)"
+echo "  FortiGate GUI : https://198.51.100.2  (admin / <admin-passwort>)"
 echo "  FortiGate CLI : nc 127.0.0.1 4555"
-echo "  Kali client   : nc 127.0.0.1 4600     (kali / kali)  IP 192.168.1.50"
+echo "  Kali client   : nc 127.0.0.1 4600     (kali / kali)  IP 192.0.2.50"

@@ -60,7 +60,7 @@ Lösung: QEMU **socket netdev** (eine Seite `listen`, andere `connect`) = echtes
 config system interface
   edit port3
     set mode static
-    set ip 192.168.1.99 255.255.255.0     # erst alte IP von port2 entfernen (sonst: Subnets overlap)
+    set ip 192.0.2.99 255.255.255.0     # erst alte IP von port2 entfernen (sonst: Subnets overlap)
     set allowaccess ping https ssh
   next
 end
@@ -72,15 +72,15 @@ end
 ```
 
 Client: statische IP via netplan ([`../client/netplan-99-fgt-lan.yaml`](../client/netplan-99-fgt-lan.yaml)),
-Gateway = FortiGate port3 (`192.168.1.99`).
+Gateway = FortiGate port3 (`192.0.2.99`).
 
 ## 5. Verifikation
 
 ```bash
-ping -c3 192.168.1.99        # FortiGate          -> 0% loss
+ping -c3 192.0.2.99        # FortiGate          -> 0% loss
 ping -c3 8.8.8.8             # Internet via NAT    -> 0% loss (inspiziert!)
 nslookup google.com 8.8.8.8  # DNS durch die FW    -> aufgelöst
-nmap -sn 192.168.1.99        # Host is up
+nmap -sn 192.0.2.99        # Host is up
 ```
 
 ## Lab starten
@@ -90,4 +90,4 @@ nmap -sn 192.168.1.99        # Host is up
 ```
 
 Zugriff: Client seriell `nc 127.0.0.1 4600` (kali / `<lab-passwort>`), FortiGate CLI `nc 127.0.0.1 4555`,
-FortiGate GUI `https://192.168.64.2`.
+FortiGate GUI `https://198.51.100.2`.

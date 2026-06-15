@@ -28,16 +28,16 @@ Diese Anleitung dokumentiert vor allem die **Stolpersteine, die kein Tutorial er
 ## Topologie
 
 ```
-Mac mini M4  (Host, 192.168.64.1)
+Mac mini M4  (Host, 198.51.100.1)
     │
     └─ UTM 4.7.5  (QEMU + hvf)
          │
          └─ FortiGate-VM 7.4.12 ARM64  (1 vCPU / 2 GB)
               │
-              ├─ port1  Shared/NAT  192.168.64.2     → WAN + Mgmt + Internet
-              │           GUI: https://192.168.64.2
+              ├─ port1  Shared/NAT  198.51.100.2     → WAN + Mgmt + Internet
+              │           GUI: https://198.51.100.2
               │
-              └─ port2  LAN          192.168.1.99/24
+              └─ port2  LAN          192.0.2.99/24
                           DHCP: .100–.200
                           Policy: LAN → WAN (NAT enable)
 ```
@@ -142,15 +142,15 @@ Danach auf **1 vCPU** bleiben (`CPUCount 1` + UTM-App-Neustart), sonst Warnung
 execute ping 8.8.8.8        # → 0% loss, ~10 ms
 
 # Mac -> FortiGate-GUI
-curl -k -o /dev/null -w "%{http_code}\n" https://192.168.64.2   # → 200
+curl -k -o /dev/null -w "%{http_code}\n" https://198.51.100.2   # → 200
 ```
 
 Routing-Tabelle:
 
 ```
-S*  0.0.0.0/0 [5/0] via 192.168.64.1, port1
-C   192.168.1.0/24 is directly connected, port2
-C   192.168.64.0/24 is directly connected, port1
+S*  0.0.0.0/0 [5/0] via 198.51.100.1, port1
+C   192.0.2.0/24 is directly connected, port2
+C   198.51.100.0/24 is directly connected, port1
 ```
 
 ---
