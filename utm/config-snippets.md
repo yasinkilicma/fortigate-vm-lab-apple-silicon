@@ -28,7 +28,7 @@ UTM bildet die Netzwerk-Modi so auf QEMU ab:
 
 | UTM-Mode | QEMU-Netdev | Verhalten |
 |----------|-------------|-----------|
-| `Shared`   | `vmnet-shared` | NAT, geteilt mit Host (hier 192.168.64.0/24) — **port1/WAN** |
+| `Shared`   | `vmnet-shared` | NAT, geteilt mit Host (hier 198.51.100.0/24) — **port1/WAN** |
 | `Emulated` | `user` (SLIRP)  | per-VM-NAT, **isoliert** — verbindet KEINE zwei VMs |
 | `Host`     | `vmnet-host`    | Host-only, eigenes DHCP von macOS |
 | `Bridged`  | `vmnet-bridged` | an physische NIC gebrückt |
